@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"flag"
 
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -10,12 +11,12 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-const kubeconfigPath = "/home/tobi/etc/local.yaml"
-
 func main() {
+	kubeconfig := flag.String("kubeconfig", "/home/tobi/etc/local.yaml", "Kubeconfig path")
+	flag.Parse()
 	fmt.Println("Starting Pod informer:")
 	// get the kubeconfig
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfigPath)
+	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	if err != nil {
 		fmt.Printf("%v", err)
 		return
